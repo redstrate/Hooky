@@ -1,0 +1,12 @@
+{
+  "Author": "redstrate",
+  "Name": "FFXIV Webhooks",
+  "Punchline": "Notify a webhook for certain game events.",
+  "Description": "Sends messages to a specified webhook endpoint, such as when a duty is popped or your character has logged in.",
+  "Tags": [
+    "notification",
+    "webhook",
+    "push"
+  ],
+  "RepoUrl": "https://git.sr.ht/~redstrate/ffxiv-web-hooks"
+}
