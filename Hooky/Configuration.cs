@@ -18,17 +18,16 @@ namespace Hooky
         public bool NotifyLoggedIn { get; set; } = true;
         public bool NotifyDutyPopped { get; set; } = true;
 
-        [NonSerialized]
-        private DalamudPluginInterface? PluginInterface;
-
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        internal Plugin Plugin;
+        
+        public void Initialize(Plugin plugin)
         {
-            PluginInterface = pluginInterface;
+            Plugin = plugin;
         }
 
         public void Save()
         {
-            PluginInterface!.SavePluginConfig(this);
+            Plugin.PluginInterface!.SavePluginConfig(this);
         }
     }
 }

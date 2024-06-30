@@ -11,7 +11,7 @@ namespace Hooky
 {
     public sealed class Plugin : IDalamudPlugin
     {
-        private DalamudPluginInterface PluginInterface { get; init; }
+        [PluginService] public IDalamudPluginInterface PluginInterface { get; set; }
         
         public Configuration Configuration { get; init; }
         
@@ -26,14 +26,12 @@ namespace Hooky
         private ConfigWindow ConfigWindow { get; init; }
         private readonly WindowSystem WindowSystem = new("Hooky");
         
-        public unsafe Plugin(
-            [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface)
+        public unsafe Plugin()
         {
-            PluginInterface = pluginInterface;
             Hooking.InitializeFromAttributes(this);
             
             Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
-            Configuration.Initialize(PluginInterface);
+            Configuration.Initialize(this);
 
             ConfigWindow = new ConfigWindow(this);
             
