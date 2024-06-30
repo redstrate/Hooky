@@ -8,5 +8,6 @@
     "webhook",
     "push"
   ],
-  "RepoUrl": "https://github.com/redstrate/hooky"
+  "RepoUrl": "https://github.com/redstrate/hooky",
+  "DalamudApiLevel": 10
 }
