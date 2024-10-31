@@ -1,4 +1,7 @@
 ﻿using System.Net.Http;
+using System.Text.RegularExpressions;
+using Dalamud.Game.Text;
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Hooking;
@@ -19,12 +22,16 @@ namespace Hooky
         
         [PluginService] private static IGameInteropProvider Hooking { get; set; } = null!;
         
+        [PluginService] private static IPluginLog Log { get; set; } = null!;
+        
         private unsafe delegate void OpenLoginWaitDialog(AgentLobby* agent, int position);
 
         private readonly Hook<OpenLoginWaitDialog>? openLoginWaitDialogHook;
         
         private ConfigWindow ConfigWindow { get; init; }
         private readonly WindowSystem WindowSystem = new("Hooky");
+        
+        [PluginService] internal static IChatGui ChatGui { get; private set; } = null!;
         
         public unsafe Plugin()
         {
@@ -46,6 +53,8 @@ namespace Hooky
 
             PluginInterface.UiBuilder.Draw += DrawUI;
             PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+            
+            Plugin.ChatGui.ChatMessage += OnChatMessage;
         }
         
         private unsafe void OpenLoginWaitDialogDetour(AgentLobby* agent, int position)
@@ -76,6 +85,8 @@ namespace Hooky
         
         public void Dispose()
         {
+            Plugin.ChatGui.ChatMessage -= OnChatMessage;
+            
             WindowSystem.RemoveAllWindows();
             
             ConfigWindow.Dispose();
@@ -99,6 +110,21 @@ namespace Hooky
         private void DrawConfigUI()
         {
             ConfigWindow.IsOpen = true;
+        }
+        
+        private void OnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message,
+            ref bool ishandled)
+        {
+            // TODO: Support other languages
+            if (sender.ToString() == "Gold Saucer Attendant")
+            {
+                Regex rg = new Regex("limited-time event “(.*)”.*in.([^.]*)");
+                var match = rg.Match(message.ToString());
+                if (match.Groups.Count == 3)
+                {
+                    SendWebhook($"GATE {match.Groups[1]} started in {match.Groups[2]}!");
+                }
+            }
         }
     }
 }
