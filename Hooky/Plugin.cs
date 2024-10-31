@@ -24,9 +24,7 @@ namespace Hooky
         
         [PluginService] private static IPluginLog Log { get; set; } = null!;
         
-        private unsafe delegate void OpenLoginWaitDialog(AgentLobby* agent, int position);
-
-        private readonly Hook<OpenLoginWaitDialog>? openLoginWaitDialogHook;
+        private readonly Hook<AgentLobby.Delegates.OpenLoginWaitDialog>? openLoginWaitDialogHook;
         
         private ConfigWindow ConfigWindow { get; init; }
         private readonly WindowSystem WindowSystem = new("Hooky");
@@ -44,7 +42,7 @@ namespace Hooky
             
             WindowSystem.AddWindow(ConfigWindow);
             
-            openLoginWaitDialogHook = Hooking.HookFromSignature<OpenLoginWaitDialog>(AgentLobby.Addresses.OpenLoginWaitDialog.String,
+            openLoginWaitDialogHook = Hooking.HookFromAddress<AgentLobby.Delegates.OpenLoginWaitDialog>(AgentLobby.MemberFunctionPointers.OpenLoginWaitDialog,
                 OpenLoginWaitDialogDetour);
             openLoginWaitDialogHook?.Enable();
             
