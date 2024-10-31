@@ -20,6 +20,7 @@ namespace Hooky
         public bool NotifyLoginQueue { get; set; } = true;
         public bool NotifyLoggedIn { get; set; } = true;
         public bool NotifyDutyPopped { get; set; } = true;
+        public bool NotifyGate { get; set; } = true;
 
         internal Plugin Plugin;
         

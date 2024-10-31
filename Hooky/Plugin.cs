@@ -136,7 +136,7 @@ namespace Hooky
             ref bool ishandled)
         {
             // TODO: Support other languages
-            if (sender.ToString() == "Gold Saucer Attendant")
+            if (Configuration.NotifyGate && sender.ToString() == "Gold Saucer Attendant")
             {
                 Regex rg = new Regex("limited-time event “(.*)”.*in.([^.]*)");
                 var match = rg.Match(message.ToString());

@@ -92,6 +92,16 @@ namespace Hooky
             
             ImGui.SameLine();
             ImGuiComponents.HelpMarker("Sends a message when the duty has 'popped' and is awaiting to be commenced.");
+            
+            var notifyGate = Configuration.NotifyGate;
+            if (ImGui.Checkbox("Gold Saucer GATE", ref notifyGate))
+            {
+                Configuration.NotifyGate = notifyGate;
+                Configuration.Save();
+            }
+            
+            ImGui.SameLine();
+            ImGuiComponents.HelpMarker("Sends a message when a Gold Saucer GATE has started. This only works when you're in the Gold Saucer.");
         }
     }
 }
