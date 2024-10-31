@@ -29,6 +29,15 @@ namespace Hooky
 
         public override void Draw()
         {
+            var whenInactive = Configuration.OnlyWhenInactive;
+            if (ImGui.Checkbox("Only When Inactive", ref whenInactive))
+            {
+                Configuration.OnlyWhenInactive = whenInactive;
+                Configuration.Save();
+            }
+            
+            ImGuiComponents.HelpMarker("Inactivity means the game window is unfocused, or your online status is set to 'Away from Keyboard'.");
+
             ImGui.TextDisabled("Webhook Settings");
             ImGui.Separator();
         

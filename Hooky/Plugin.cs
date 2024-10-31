@@ -7,6 +7,7 @@ using Dalamud.Plugin;
 using Dalamud.Hooking;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Lumina.Excel.GeneratedSheets;
 
@@ -93,9 +94,30 @@ namespace Hooky
             ClientState.Login -= OnLogin;
             openLoginWaitDialogHook?.Dispose();
         }
+
+        private bool IsAfk()
+        {
+            unsafe
+            {
+                bool isAfk = false;
+                if (ClientState.LocalPlayer != null && ClientState.LocalPlayer.OnlineStatus.GameData != null)
+                {
+                    // TODO: Really? 17?
+                    isAfk = ClientState.LocalPlayer.OnlineStatus.Id == 17;
+                }
+                isAfk |= !UIInputData.Instance()->IsGameWindowFocused;
+
+                return isAfk;
+            }
+        }
         
         public void SendWebhook(string message)
         {
+            if (Configuration.OnlyWhenInactive && !IsAfk())
+            {
+                return;
+            }
+            
             var client = new HttpClient();
             client.PostAsync(Configuration.WebhookUrl, new StringContent("{\"body\":\"" + message + "\", \"key\": \"" + Configuration.SecretKey + "\"}"));
         }

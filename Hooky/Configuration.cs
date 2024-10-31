@@ -8,6 +8,9 @@ namespace Hooky
     public class Configuration : IPluginConfiguration
     {
         public int Version { get; set; } = 0;
+        
+        // General Settings
+        public bool OnlyWhenInactive { get; set; } = true;
 
         // Webhook Settings
         public string WebhookUrl { get; set; } = "";
