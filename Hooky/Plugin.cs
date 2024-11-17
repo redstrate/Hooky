@@ -9,7 +9,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 namespace Hooky
 {
@@ -100,12 +100,13 @@ namespace Hooky
             unsafe
             {
                 bool isAfk = false;
-                if (ClientState.LocalPlayer != null && ClientState.LocalPlayer.OnlineStatus.GameData != null)
+                if (ClientState.LocalPlayer != null && ClientState.LocalPlayer.OnlineStatus.ValueNullable != null)
                 {
                     // TODO: Really? 17?
-                    isAfk = ClientState.LocalPlayer.OnlineStatus.Id == 17;
+                    isAfk = ClientState.LocalPlayer.OnlineStatus.RowId == 17;
                 }
-                isAfk |= !UIInputData.Instance()->IsGameWindowFocused;
+                // TODO: Gone in latest game version...?
+                //isAfk |= !UIInputData.Instance()->IsGameWindowFocused;
 
                 return isAfk;
             }
