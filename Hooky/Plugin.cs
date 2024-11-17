@@ -111,9 +111,9 @@ namespace Hooky
             }
         }
         
-        public void SendWebhook(string message)
+        public void SendWebhook(string message, bool checkAfk = true)
         {
-            if (Configuration.OnlyWhenInactive && !IsAfk())
+            if (checkAfk && Configuration.OnlyWhenInactive && !IsAfk())
             {
                 return;
             }

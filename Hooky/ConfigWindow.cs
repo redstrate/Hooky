@@ -57,7 +57,7 @@ namespace Hooky
 
             if (ImGui.Button("Send Test Message"))
             {
-                Plugin.SendWebhook("Test message!");
+                Plugin.SendWebhook("Test message!", false);
             }
 
             ImGui.TextDisabled("Events");
