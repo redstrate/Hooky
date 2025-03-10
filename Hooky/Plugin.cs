@@ -105,8 +105,7 @@ namespace Hooky
                     // TODO: Really? 17?
                     isAfk = ClientState.LocalPlayer.OnlineStatus.RowId == 17;
                 }
-                // TODO: Gone in latest game version...?
-                //isAfk |= !UIInputData.Instance()->IsGameWindowFocused;
+                isAfk |= !UIInputData.Instance()->CursorInputs.IsGameWindowFocused;
 
                 return isAfk;
             }
